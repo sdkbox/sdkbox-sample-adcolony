@@ -31,23 +31,59 @@ var HelloWorldLayer = cc.Layer.extend({
     },
 
     createTestMenu:function() {
-        var item1 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 1", "sans", 28), function() {
-            cc.log("Test Item 1");
+        cc.MenuItemFont.setFontName("sans");
+        var size = cc.Director.getInstance().getWinSize();
+
+        var dump = function (data) {
+            cc.log("  dump:");
+            for (var key in data) {
+                cc.log("  - " + key.toString() + ": " + data[key].toString());
+            }
+        };
+
+        // init plugin
+        sdkbox.PluginAdColony.init();
+        sdkbox.PluginAdColony.setListener({
+            onAdColonyChange : function (data, available) {
+                // Called when AdColony finish loading
+                cc.log("onAdColonyChange");
+                dump(data);
+                cc.log(available);
+            },
+            onAdColonyReward : function (data, currencyName, amount, success) {
+                // Called when AdColony v4vc ad finish playing
+                cc.log("onAdColonyReward");
+                dump(data);
+                cc.log("currencyName: " + currencyName.toString());
+                cc.log("amount: " + amount.toString());
+                cc.log("success: " + success.toString());
+            },
+            onAdColonyStarted : function (data) {
+                // Called when ad starts playing
+                cc.log("onAdColonyStarted");
+                dump(data);
+            },
+            onAdColonyFinished : function (data) {
+                // Called when an ad finish displaying
+                cc.log("onAdColonyFinished");
+                dump(data);
+            }
         });
 
-        var item2 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 2", "sans", 28), function() {
-            cc.log("Test Item 2");
-        });
+        var menu = new cc.Menu(
+            new cc.MenuItemFont("show video", function() {
+                sdkbox.PluginAdColony.show("video");
+                cc.log("show video");
+            }),
+            new cc.MenuItemFont("show v4vc", function() {
+                sdkbox.PluginAdColony.show("v4vc");
+                cc.log("show v4vc");
+            })
+        );
 
-        var item3 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 3", "sans", 28), function() {
-            cc.log("Test Item 3");
-        });
-
-        var winsize = cc.winSize;
-        var menu = new cc.Menu(item1, item2, item3);
-        menu.x = winsize.width / 2;
-        menu.y = winsize.height / 2;
-        menu.alignItemsVerticallyWithPadding(20);
+        menu.alignItemsVerticallyWithPadding(5);
+        menu.x = size.width/2;
+        menu.y = size.height/2;
         this.addChild(menu);
     }
 });

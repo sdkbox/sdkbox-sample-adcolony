@@ -18,25 +18,26 @@ function MainScene:onCreate()
 end
 
 function MainScene:setupTestMenu()
-    local label1 = cc.Label:createWithSystemFont("Test Item 1", "sans", 28)
+    sdkbox.PluginAdColony:init()
+    sdkbox.PluginAdColony:setListener(function(args)
+        dump(args)
+    end)
+
+    local label1 = cc.Label:createWithSystemFont("show video", "sans", 28)
     local item1 = cc.MenuItemLabel:create(label1)
     item1:onClicked(function()
-        print("Test Item 1")
+        print("show video")
+        sdkbox.PluginAdColony:show("video")
     end)
 
-    local label2 = cc.Label:createWithSystemFont("Test Item 2", "sans", 28)
+    local label2 = cc.Label:createWithSystemFont("show v4vc", "sans", 28)
     local item2 = cc.MenuItemLabel:create(label2)
     item2:onClicked(function()
-        print("Test Item 2")
+        print("show v4vc")
+        sdkbox.PluginAdColony:show("v4vc")
     end)
 
-    local label3 = cc.Label:createWithSystemFont("Test Item 3", "sans", 28)
-    local item3 = cc.MenuItemLabel:create(label3)
-    item3:onClicked(function()
-        print("Test Item 3")
-    end)
-
-    local menu = cc.Menu:create(item1, item2, item3)
+    local menu = cc.Menu:create(item1, item2)
     menu:alignItemsVerticallyWithPadding(24)
     self:addChild(menu)
 end
