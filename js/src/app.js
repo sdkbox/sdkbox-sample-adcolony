@@ -31,6 +31,26 @@ var HelloWorldLayer = cc.Layer.extend({
     },
 
     createTestMenu:function() {
+
+        var self = this;
+
+        // reward amount label
+        var rewardLabel = new cc.LabelTTF("0", "sans", 32);
+        rewardLabel.x = cc.winSize.width / 2;
+        rewardLabel.y = 30;
+        this.addChild(rewardLabel)
+        self.rewardLabel = rewardLabel;
+        self.rewardAmount = 0;
+
+        // event label
+        var eventLabel = new cc.LabelTTF("No event", "sans", 32);
+        eventLabel.setAnchorPoint(cc.p(0, 0));
+        eventLabel.x = 5
+        eventLabel.y = 5
+        this.addChild(eventLabel)
+        self.eventLabel = eventLabel
+
+
         cc.MenuItemFont.setFontName("sans");
         var size = cc.Director.getInstance().getWinSize();
 
@@ -49,6 +69,8 @@ var HelloWorldLayer = cc.Layer.extend({
                 cc.log("onAdColonyChange");
                 dump(data);
                 cc.log(available);
+
+                self.eventLabel.setString("onAdColonyChange:" + data["name"]);
             },
             onAdColonyReward : function (data, currencyName, amount, success) {
                 // Called when AdColony v4vc ad finish playing
@@ -57,16 +79,24 @@ var HelloWorldLayer = cc.Layer.extend({
                 cc.log("currencyName: " + currencyName.toString());
                 cc.log("amount: " + amount.toString());
                 cc.log("success: " + success.toString());
+
+                self.eventLabel.setString("onAdColonyReward");
+                self.rewardAmount = self.rewardAmount + amount;
+                self.rewardLabel.setString(self.rewardAmount.toString());
             },
             onAdColonyStarted : function (data) {
                 // Called when ad starts playing
                 cc.log("onAdColonyStarted");
                 dump(data);
+
+                self.eventLabel.setString("onAdColonyStarted");
             },
             onAdColonyFinished : function (data) {
                 // Called when an ad finish displaying
                 cc.log("onAdColonyFinished");
                 dump(data);
+
+                self.eventLabel.setString("onAdColonyFinished");
             }
         });
 

@@ -18,9 +18,29 @@ function MainScene:onCreate()
 end
 
 function MainScene:setupTestMenu()
+    -- reward amount label
+    local rewardAmount = 0
+    local rewardLabel = cc.Label:createWithSystemFont("0", "sans", 32)
+    rewardLabel:setPosition(display.cx, 60)
+    self:addChild(rewardLabel)
+
+    -- event label
+    local eventLabel = cc.Label:createWithSystemFont("No event", "sans", 32)
+    eventLabel:setAnchorPoint(cc.p(0,0))
+    eventLabel:setPosition(5, 5)
+    self:addChild(eventLabel)
+
+    --
     sdkbox.PluginAdColony:init()
     sdkbox.PluginAdColony:setListener(function(args)
         dump(args)
+        eventLabel:setString(args.name)
+
+        if args.name == "onAdColonyReward" then
+            rewardAmount = rewardAmount + args.amount
+            rewardLabel:setString(tostring(rewardAmount))
+        end
+
     end)
 
     local label1 = cc.Label:createWithSystemFont("show video", "sans", 28)
