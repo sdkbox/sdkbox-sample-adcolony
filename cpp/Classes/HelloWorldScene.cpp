@@ -47,17 +47,31 @@ bool HelloWorld::init()
     quit->setPosition(Vec2(winsize.width / 2 - labelSize.width / 2 - 16,
                            -winsize.height / 2 + labelSize.height / 2 + 16));
     addChild(Menu::create(quit, NULL));
-    
+
     // add test menu
     createTestMenu();
+    sdkbox::PluginAdColony::setListener(this);
     
     return true;
 }
 
 void HelloWorld::createTestMenu()
 {
-    MenuItemFont::setFontName("sans");
     Size size = Director::getInstance()->getWinSize();
+
+    // add status label
+    _status = Label::createWithSystemFont("No event.", "sans", 32);
+    _status->setTextColor(Color4B(0, 255, 0, 255));
+    _status->setAnchorPoint(Vec2(0,0));
+    _status->setPosition(5,5);
+    addChild(_status);
+
+    // reward label
+    _reward = Label::createWithSystemFont("0", "sans", 32);
+    _reward->setPosition(size.width / 2, 30);
+    addChild(_reward);
+
+    MenuItemFont::setFontName("sans");
     
     auto menu = Menu::create(MenuItemFont::create("show video", CC_CALLBACK_1(HelloWorld::onShowVideo, this)),
                              MenuItemFont::create("show v4vc", CC_CALLBACK_1(HelloWorld::onShowV4vc, this)),
@@ -93,6 +107,8 @@ void HelloWorld::onAdColonyChange(const sdkbox::AdColonyAdInfo& info, bool avail
 //        int iapEngagementType;
 //    };
 
+    _status->setString(__FUNCTION__);
+
     CCLOG("onAdColonyChange");
     CCLOG("info.name: %s", info.name.c_str());
     CCLOG("info.shown: %s", info.shown ? "true" : "false");
@@ -106,7 +122,9 @@ void HelloWorld::onAdColonyChange(const sdkbox::AdColonyAdInfo& info, bool avail
 void HelloWorld::onAdColonyReward(const sdkbox::AdColonyAdInfo& info,
                                   const std::string& currencyName, int amount, bool success)
 {
-    
+    _status->setString(__FUNCTION__);
+    _reward->setString(StringUtils::toString((int)utils::atof(_reward->getString().c_str()) + amount));
+
     CCLOG("onAdColonyReward, currencyName: %s, amount: %d, success: %s", currencyName.c_str(), amount, success ? "true" : "false");
     CCLOG("info.name: %s", info.name.c_str());
     CCLOG("info.shown: %s", info.shown ? "true" : "false");
@@ -119,6 +137,8 @@ void HelloWorld::onAdColonyReward(const sdkbox::AdColonyAdInfo& info,
 
 void HelloWorld::onAdColonyStarted(const sdkbox::AdColonyAdInfo& info)
 {
+    _status->setString(__FUNCTION__);
+
     CCLOG("onAdColonyStarted");
     CCLOG("info.name: %s", info.name.c_str());
     CCLOG("info.shown: %s", info.shown ? "true" : "false");
@@ -131,6 +151,8 @@ void HelloWorld::onAdColonyStarted(const sdkbox::AdColonyAdInfo& info)
 
 void HelloWorld::onAdColonyFinished(const sdkbox::AdColonyAdInfo& info)
 {
+    _status->setString(__FUNCTION__);
+
     CCLOG("onAdColonyFinished");
     CCLOG("info.name: %s", info.name.c_str());
     CCLOG("info.shown: %s", info.shown ? "true" : "false");

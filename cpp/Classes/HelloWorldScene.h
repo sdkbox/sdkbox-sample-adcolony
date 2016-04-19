@@ -27,6 +27,10 @@ private:
                           const std::string& currencyName, int amount, bool success);
     void onAdColonyStarted(const sdkbox::AdColonyAdInfo& info);
     void onAdColonyFinished(const sdkbox::AdColonyAdInfo& info);
+
+private:
+    cocos2d::Label *_status;
+    cocos2d::Label *_reward;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
