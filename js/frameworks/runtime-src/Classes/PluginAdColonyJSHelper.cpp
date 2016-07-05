@@ -123,10 +123,22 @@ class AdColonyListenerWrapper : public sdkbox::AdColonyListener
 {
 private:
     JSObject* _JSDelegate;
+    mozilla::Maybe<JS::PersistentRootedValue> _jsCallbackRef;
 public:
-    void setJSDelegate(JSObject* delegate)
+    AdColonyListenerWrapper()
     {
-        _JSDelegate = delegate;
+        JSContext* cx = ScriptingCore::getInstance()->getGlobalContext();
+        _jsCallbackRef.construct(cx, JS::NullHandleValue);
+    }
+    ~AdColonyListenerWrapper()
+    {
+        _jsCallbackRef.destroyIfConstructed();
+    }
+    void setJSDelegate(JS::HandleValue func)
+    {
+        if (!func.isNullOrUndefined())
+            _jsCallbackRef.ref() = func;
+        _JSDelegate = func.toObjectOrNull();
     }
 
     JSObject* getJSDelegate()
@@ -379,14 +391,14 @@ JSBool js_PluginAdColonyJS_PluginAdColony_setListener(JSContext *cx, uint32_t ar
         {
             ok = false;
         }
-        JSObject *tmpObj = args.get(0).toObjectOrNull();
 
         JSB_PRECONDITION2(ok, cx, false, "js_PluginAdColonyJS_PluginAdColony_setIAPListener : Error processing arguments");
         AdColonyListenerWrapper* wrapper = new AdColonyListenerWrapper();
-        wrapper->setJSDelegate(tmpObj);
+        wrapper->setJSDelegate(args.get(0));
         sdkbox::PluginAdColony::setListener(wrapper);
 
         args.rval().setUndefined();
+
         return true;
     }
     JS_ReportError(cx, "js_PluginAdColonyJS_PluginAdColony_setIAPListener : wrong number of arguments");
