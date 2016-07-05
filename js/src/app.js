@@ -108,6 +108,11 @@ var HelloWorldLayer = cc.Layer.extend({
             new cc.MenuItemFont("show v4vc", function() {
                 sdkbox.PluginAdColony.show("v4vc");
                 cc.log("show v4vc");
+            }),
+            new cc.MenuItemFont("====gc===", function() {
+                cc.log("======gc start=====");
+                __jsc__.garbageCollect();
+                cc.log("======gc end=====");
             })
         );
 
