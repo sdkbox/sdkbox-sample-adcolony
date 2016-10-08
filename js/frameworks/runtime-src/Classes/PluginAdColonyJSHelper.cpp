@@ -1,8 +1,6 @@
 #include "PluginAdColonyJSHelper.h"
-#include "cocos2d_specifics.hpp"
 #include "PluginAdColony/PluginAdColony.h"
 #include "SDKBoxJSHelper.h"
-#include "cocos2d.h"
 
 extern JSObject* jsb_sdkbox_PluginAdColony_prototype;
 
@@ -119,31 +117,10 @@ JSObject* adinfo_to_obj(JSContext* cx, const sdkbox::AdColonyAdInfo& info)
     return jsobj;
 }
 
-class AdColonyListenerWrapper : public sdkbox::AdColonyListener
+class AdColonyListenerWrapper : public sdkbox::AdColonyListener, public sdkbox::JSListenerBase
 {
-private:
-    JSObject* _JSDelegate;
-    mozilla::Maybe<JS::PersistentRootedValue> _jsCallbackRef;
 public:
-    AdColonyListenerWrapper()
-    {
-        JSContext* cx = ScriptingCore::getInstance()->getGlobalContext();
-        _jsCallbackRef.construct(cx, JS::NullHandleValue);
-    }
-    ~AdColonyListenerWrapper()
-    {
-        _jsCallbackRef.destroyIfConstructed();
-    }
-    void setJSDelegate(JS::HandleValue func)
-    {
-        if (!func.isNullOrUndefined())
-            _jsCallbackRef.ref() = func;
-        _JSDelegate = func.toObjectOrNull();
-    }
-
-    JSObject* getJSDelegate()
-    {
-        return _JSDelegate;
+    AdColonyListenerWrapper():sdkbox::JSListenerBase() {
     }
 
     void onAdColonyChange(const sdkbox::AdColonyAdInfo& info, bool available)
@@ -158,7 +135,7 @@ public:
         JSContext* cx = s_cx;
         const char* func_name = "onAdColonyChange";
 
-        JS::RootedObject obj(cx, _JSDelegate);
+        JS::RootedObject obj(cx, getJSDelegate());
         JSAutoCompartment ac(cx, obj);
 
 #if defined(MOZJS_MAJOR_VERSION)
@@ -215,7 +192,7 @@ public:
         JSContext* cx = s_cx;
         const char* func_name = "onAdColonyReward";
 
-        JS::RootedObject obj(cx, _JSDelegate);
+        JS::RootedObject obj(cx, getJSDelegate());
         JSAutoCompartment ac(cx, obj);
 
 #if defined(MOZJS_MAJOR_VERSION)
@@ -271,7 +248,7 @@ public:
         JSContext* cx = s_cx;
         const char* func_name = "onAdColonyStarted";
 
-        JS::RootedObject obj(cx, _JSDelegate);
+        JS::RootedObject obj(cx, getJSDelegate());
         JSAutoCompartment ac(cx, obj);
 
 #if defined(MOZJS_MAJOR_VERSION)
@@ -326,7 +303,7 @@ public:
         JSContext* cx = s_cx;
         const char* func_name = "onAdColonyFinished";
 
-        JS::RootedObject obj(cx, _JSDelegate);
+        JS::RootedObject obj(cx, getJSDelegate());
         JSAutoCompartment ac(cx, obj);
 
 #if defined(MOZJS_MAJOR_VERSION)
@@ -398,7 +375,6 @@ JSBool js_PluginAdColonyJS_PluginAdColony_setListener(JSContext *cx, uint32_t ar
         sdkbox::PluginAdColony::setListener(wrapper);
 
         args.rval().setUndefined();
-
         return true;
     }
     JS_ReportError(cx, "js_PluginAdColonyJS_PluginAdColony_setIAPListener : wrong number of arguments");
