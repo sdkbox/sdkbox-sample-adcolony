@@ -8,12 +8,22 @@ LOCAL_MODULE_FILENAME := libcocos2djs
 
 LOCAL_ARM_MODE := arm
 
-LOCAL_SRC_FILES := ../../Classes/AppDelegate.cpp ../../Classes/ide-support/SimpleConfigParser.cpp ../../Classes/ide-support/RuntimeJsImpl.cpp hellojavascript/main.cpp ../../Classes/PluginAdColonyJS.cpp ../../Classes/PluginAdColonyJSHelper.cpp ../../Classes/SDKBoxJSHelper.cpp
+LOCAL_SRC_FILES := ../../Classes/AppDelegate.cpp \
+../../Classes/ide-support/SimpleConfigParser.cpp \
+../../Classes/ide-support/RuntimeJsImpl.cpp \
+hellojavascript/main.cpp \
+../../Classes/PluginAdColonyJS.cpp \
+../../Classes/PluginAdColonyJSHelper.cpp \
+../../Classes/SDKBoxJSHelper.cpp
 
 LOCAL_CPPFLAGS := -DSDKBOX_ENABLED
-LOCAL_LDLIBS := -landroid -llog
+LOCAL_LDLIBS := -landroid \
+-llog
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
-LOCAL_WHOLE_STATIC_LIBRARIES := PluginAdColony sdkbox
+LOCAL_SHARED_LIBRARIES := libadcolonyso \
+libjsso
+LOCAL_WHOLE_STATIC_LIBRARIES := PluginAdColony \
+sdkbox
 
 LOCAL_STATIC_LIBRARIES := cocos2d_js_static
 LOCAL_STATIC_LIBRARIES += cocos2d_simulator_static
