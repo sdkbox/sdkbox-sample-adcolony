@@ -63,6 +63,13 @@ namespace sdkbox
     public:
 
         /**
+         * Set GDPR
+         *
+         * **NOTE**: please call before 'init' function
+         */
+        static void setGDPR(bool enabled);
+        
+        /**
          * initialize the plugin instance.
          */
         static void init();
@@ -226,6 +233,11 @@ namespace sdkbox
         * @see onAdColonyIAPRequest:quantity
         */
         static void notifyIAPComplete(const std::string& transactionID, const std::string& productID, int quantity, float price, const std::string& currencyCode);
+        
+        /**
+         * Request all ads
+         */
+        static void requestAllAds();
     };
 }
 

@@ -10,12 +10,18 @@ LOCAL_MODULE := cocos2dcpp_shared
 
 LOCAL_MODULE_FILENAME := libcocos2dcpp
 
-LOCAL_SRC_FILES := hellocpp/main.cpp ../../Classes/AppDelegate.cpp ../../Classes/HelloWorldScene.cpp
+LOCAL_SRC_FILES := hellocpp/main.cpp \
+../../Classes/AppDelegate.cpp \
+../../Classes/HelloWorldScene.cpp
 
 LOCAL_CPPFLAGS := -DSDKBOX_ENABLED
-LOCAL_LDLIBS := -landroid -llog
+LOCAL_LDLIBS := -landroid \
+-llog
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
-LOCAL_WHOLE_STATIC_LIBRARIES := PluginAdColony sdkbox
+LOCAL_SHARED_LIBRARIES := libadcolonyso \
+libjsso
+LOCAL_WHOLE_STATIC_LIBRARIES := PluginAdColony \
+sdkbox
 
 # _COCOS_HEADER_ANDROID_BEGIN
 # _COCOS_HEADER_ANDROID_END
@@ -31,7 +37,7 @@ $(call import-add-path,$(LOCAL_PATH))
 
 $(call import-module,./prebuilt-mk)
 $(call import-module, ./sdkbox)
-$(call import-module, ./pluginadcolony)
+$(call import-module, ./PluginAdColony)
 
 # _COCOS_LIB_IMPORT_ANDROID_BEGIN
 # _COCOS_LIB_IMPORT_ANDROID_END
