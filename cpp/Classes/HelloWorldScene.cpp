@@ -94,71 +94,84 @@ void HelloWorld::onShowV4vc(cocos2d::Ref* sender)
     CCLOG("onShowVideo");
 }
 
-void HelloWorld::onAdColonyChange(const sdkbox::AdColonyAdInfo& info, bool available)
-{
-//    struct AdColonyAdInfo
-//    {
-//        std::string name;
-//        bool shown;
-//        std::string zoneID;
-//        bool iapEnabled;
-//        std::string iapProductID;
-//        int iapQuantity;
-//        int iapEngagementType;
-//    };
-
+void HelloWorld::adColonyInterstitialDidLoad(const std::string& interstitial) {
+    CCLOG("adColonyInterstitialDidLoad");
     _status->setString(__FUNCTION__);
+}
 
-    CCLOG("onAdColonyChange");
-    CCLOG("info.name: %s", info.name.c_str());
-    CCLOG("info.shown: %s", info.shown ? "true" : "false");
-    CCLOG("info.zoneID: %s", info.zoneID.c_str());
-    CCLOG("info.iapEnabled: %s", info.iapEnabled ? "true" : "false");
-    CCLOG("info.iapProductID: %s", info.iapProductID.c_str());
-    CCLOG("info.iapQuantity: %d", info.iapQuantity);
-    CCLOG("info.iapEngagementType: %d", info.iapEngagementType);
+void HelloWorld::adColonyInterstitialDidFailToLoad(const std::string& error) {
+    CCLOG("adColonyInterstitialDidFailToLoad");
+    _status->setString(__FUNCTION__);
+}
+
+void HelloWorld::adColonyInterstitialWillOpen(const std::string& interstitial) {
+    CCLOG("adColonyInterstitialWillOpen");
+}
+
+void HelloWorld::adColonyInterstitialDidClose(const std::string& interstitial) {
+    CCLOG("adColonyInterstitialDidClose");
+}
+
+void HelloWorld::adColonyInterstitialExpired(const std::string& interstitial) {
+    CCLOG("adColonyInterstitialExpired");
+}
+
+void HelloWorld::adColonyInterstitialWillLeaveApplication(const std::string& interstitial) {
+    CCLOG("adColonyInterstitialWillLeaveApplication");
+}
+
+void HelloWorld::adColonyInterstitialDidReceiveClick(const std::string& interstitial) {
+    CCLOG("adColonyInterstitialDidReceiveClick");
+}
+
+void HelloWorld::adColonyInterstitialIapOpportunity(const std::string& interstitial, const std::string& iapProductID, int engagement) {
+    CCLOG("adColonyInterstitialIapOpportunity");
+}
+
+void HelloWorld::adColonyAdViewDidLoad(const std::string& adView) {
+    CCLOG("adColonyAdViewDidLoad");
+    _status->setString(__FUNCTION__);
+}
+
+void HelloWorld::adColonyAdViewDidFailToLoad(const std::string& error) {
+    CCLOG("adColonyAdViewDidFailToLoad");
+    _status->setString(__FUNCTION__);
+}
+
+void HelloWorld::adColonyAdViewWillLeaveApplication(const std::string& adView) {
+    CCLOG("adColonyAdViewWillLeaveApplication");
+}
+
+void HelloWorld::adColonyAdViewWillOpen(const std::string& adView) {
+    CCLOG("adColonyAdViewWillOpen");
+}
+
+void HelloWorld::adColonyAdViewDidClose(const std::string& adView) {
+    CCLOG("adColonyAdViewDidClose");
+}
+
+void HelloWorld::adColonyAdViewDidReceiveClick(const std::string& adView) {
+    CCLOG("adColonyAdViewDidReceiveClick");
+}
+
+void HelloWorld::adColonyReward(const std::string name, const std::string& currencyName, int amount, bool success) {
+    CCLOG("adColonyReward");
+    _reward->setString(StringUtils::toString((int)utils::atof(_reward->getString().c_str()) + amount));
+}
+
+void HelloWorld::onAdColonyChange(const sdkbox::AdColonyAdInfo& info, bool available) {
+    CCLOG("onAdColonyChange is deprecated");
 }
 
 void HelloWorld::onAdColonyReward(const sdkbox::AdColonyAdInfo& info,
-                                  const std::string& currencyName, int amount, bool success)
-{
-    _status->setString(__FUNCTION__);
-    _reward->setString(StringUtils::toString((int)utils::atof(_reward->getString().c_str()) + amount));
-
-    CCLOG("onAdColonyReward, currencyName: %s, amount: %d, success: %s", currencyName.c_str(), amount, success ? "true" : "false");
-    CCLOG("info.name: %s", info.name.c_str());
-    CCLOG("info.shown: %s", info.shown ? "true" : "false");
-    CCLOG("info.zoneID: %s", info.zoneID.c_str());
-    CCLOG("info.iapEnabled: %s", info.iapEnabled ? "true" : "false");
-    CCLOG("info.iapProductID: %s", info.iapProductID.c_str());
-    CCLOG("info.iapQuantity: %d", info.iapQuantity);
-    CCLOG("info.iapEngagementType: %d", info.iapEngagementType);
+                                  const std::string& currencyName, int amount, bool success) {
+    CCLOG("onAdColonyReward is deprecated");
 }
 
-void HelloWorld::onAdColonyStarted(const sdkbox::AdColonyAdInfo& info)
-{
-    _status->setString(__FUNCTION__);
-
-    CCLOG("onAdColonyStarted");
-    CCLOG("info.name: %s", info.name.c_str());
-    CCLOG("info.shown: %s", info.shown ? "true" : "false");
-    CCLOG("info.zoneID: %s", info.zoneID.c_str());
-    CCLOG("info.iapEnabled: %s", info.iapEnabled ? "true" : "false");
-    CCLOG("info.iapProductID: %s", info.iapProductID.c_str());
-    CCLOG("info.iapQuantity: %d", info.iapQuantity);
-    CCLOG("info.iapEngagementType: %d", info.iapEngagementType);
+void HelloWorld::onAdColonyStarted(const sdkbox::AdColonyAdInfo& info) {
+    CCLOG("onAdColonyStarted is deprecated");
 }
 
-void HelloWorld::onAdColonyFinished(const sdkbox::AdColonyAdInfo& info)
-{
-    _status->setString(__FUNCTION__);
-
-    CCLOG("onAdColonyFinished");
-    CCLOG("info.name: %s", info.name.c_str());
-    CCLOG("info.shown: %s", info.shown ? "true" : "false");
-    CCLOG("info.zoneID: %s", info.zoneID.c_str());
-    CCLOG("info.iapEnabled: %s", info.iapEnabled ? "true" : "false");
-    CCLOG("info.iapProductID: %s", info.iapProductID.c_str());
-    CCLOG("info.iapQuantity: %d", info.iapQuantity);
-    CCLOG("info.iapEngagementType: %d", info.iapEngagementType);
+void HelloWorld::onAdColonyFinished(const sdkbox::AdColonyAdInfo& info) {
+    CCLOG("onAdColonyFinished is deprecated");
 }

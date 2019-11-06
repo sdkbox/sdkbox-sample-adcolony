@@ -64,39 +64,83 @@ var HelloWorldLayer = cc.Layer.extend({
         // init plugin
         sdkbox.PluginAdColony.init();
         sdkbox.PluginAdColony.setListener({
-            onAdColonyChange : function (data, available) {
-                // Called when AdColony finish loading
-                cc.log("onAdColonyChange");
-                dump(data);
-                cc.log(available);
 
-                self.eventLabel.setString("onAdColonyChange:" + data["name"]);
+            adColonyInterstitialDidLoad: function(interstitial) {
+                cc.log("adColonyInterstitialDidLoad: " + interstitial);
+                self.eventLabel.setString("adColonyInterstitialDidLoad");
             },
-            onAdColonyReward : function (data, currencyName, amount, success) {
-                // Called when AdColony v4vc ad finish playing
-                cc.log("onAdColonyReward");
-                dump(data);
-                cc.log("currencyName: " + currencyName.toString());
-                cc.log("amount: " + amount.toString());
-                cc.log("success: " + success.toString());
-
-                self.eventLabel.setString("onAdColonyReward");
+            
+            adColonyInterstitialDidFailToLoad(error) {
+                cc.log("adColonyInterstitialDidFailToLoad: " + error);
+                self.eventLabel.setString("adColonyInterstitialDidFailToLoad");
+            },
+            
+            adColonyInterstitialWillOpen: function(interstitial) {
+                cc.log("adColonyInterstitialWillOpen: " + interstitial);
+            },
+            
+            adColonyInterstitialDidClose: function(interstitial) {
+                cc.log("adColonyInterstitialDidClose: " + interstitial);
+            },
+            
+            adColonyInterstitialExpired: function(interstitial) {
+                cc.log("adColonyInterstitialExpired: " + interstitial);
+            },
+            
+            adColonyInterstitialWillLeaveApplication: function(interstitial) {
+                cc.log("adColonyInterstitialWillLeaveApplication: " + interstitial);
+            },
+            
+            adColonyInterstitialDidReceiveClick: function(interstitial) {
+                cc.log("adColonyInterstitialDidReceiveClick: " + interstitial);
+            },
+            
+            adColonyInterstitialIapOpportunity: function(interstitial, iapProductID, engagement) {
+                cc.log("adColonyInterstitialIapOpportunity: %s %s %d", interstitial, iapProductID, engagement);
+            },
+            
+            adColonyAdViewDidLoad(adView) {
+                cc.log("adColonyAdViewDidLoad: " + adView);
+                self.eventLabel.setString("adColonyAdViewDidLoad");
+            },
+            
+            adColonyAdViewDidFailToLoad(error) {
+                cc.log("adColonyAdViewDidFailToLoad: " + error);
+                self.eventLabel.setString("adColonyAdViewDidFailToLoad");
+            },
+            
+            adColonyAdViewWillLeaveApplication(adView) {
+                cc.log("adColonyAdViewWillLeaveApplication:" + adView);
+            },
+            
+            adColonyAdViewWillOpen(adView) {
+                cc.log("adColonyAdViewWillOpen:" + adView.c_str());
+            },
+            
+            adColonyAdViewDidClose(adView) {
+                cc.log("adColonyAdViewDidClose:" + adView.c_str());
+            },
+            
+            adColonyAdViewDidReceiveClick(adView) {
+                cc.log("adColonyAdViewDidReceiveClick:" + adView.c_str());
+            },
+            
+            adColonyReward(name, currencyName, amount, success) {
+                cc.log("adColonyReward: %s %s %d %d", name.c_str(), currencyName.c_str(), amount, success);
                 self.rewardAmount = self.rewardAmount + amount;
                 self.rewardLabel.setString(self.rewardAmount.toString());
             },
+            onAdColonyChange : function (data, available) {
+                cc.log("onAdColonyChange is deprecated");
+            },
+            onAdColonyReward : function (data, currencyName, amount, success) {
+                cc.log("onAdColonyReward is deprecated");
+            },
             onAdColonyStarted : function (data) {
-                // Called when ad starts playing
-                cc.log("onAdColonyStarted");
-                dump(data);
-
-                self.eventLabel.setString("onAdColonyStarted");
+                cc.log("onAdColonyStarted is deprecated");
             },
             onAdColonyFinished : function (data) {
-                // Called when an ad finish displaying
-                cc.log("onAdColonyFinished");
-                dump(data);
-
-                self.eventLabel.setString("onAdColonyFinished");
+                cc.log("onAdColonyFinished is deprecated");
             }
         });
 

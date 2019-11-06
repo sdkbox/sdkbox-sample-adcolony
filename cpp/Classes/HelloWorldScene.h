@@ -22,6 +22,33 @@ private:
     void onShowVideo(cocos2d::Ref* sender);
     void onShowV4vc(cocos2d::Ref* sender);
 
+    /*
+     * Interstitial Callback
+     */
+    void adColonyInterstitialDidLoad(const std::string& interstitial);
+    void adColonyInterstitialDidFailToLoad(const std::string& error);
+    void adColonyInterstitialWillOpen(const std::string& interstitial);
+    void adColonyInterstitialDidClose(const std::string& interstitial);
+    void adColonyInterstitialExpired(const std::string& interstitial);
+    void adColonyInterstitialWillLeaveApplication(const std::string& interstitial);
+    void adColonyInterstitialDidReceiveClick(const std::string& interstitial);
+    void adColonyInterstitialIapOpportunity(const std::string& interstitial, const std::string& iapProductID, int engagement);
+
+    /*
+     * Banner Callback
+     */
+    void adColonyAdViewDidLoad(const std::string& adView);
+    void adColonyAdViewDidFailToLoad(const std::string& error);
+    void adColonyAdViewWillLeaveApplication(const std::string& adView);
+    void adColonyAdViewWillOpen(const std::string& adView);
+    void adColonyAdViewDidClose(const std::string& adView);
+    void adColonyAdViewDidReceiveClick(const std::string& adView);
+
+    /*
+     * Rewards Callback
+     */
+    void adColonyReward(const std::string name, const std::string& currencyName, int amount, bool success);
+
     void onAdColonyChange(const sdkbox::AdColonyAdInfo& info, bool available);
     void onAdColonyReward(const sdkbox::AdColonyAdInfo& info,
                           const std::string& currencyName, int amount, bool success);

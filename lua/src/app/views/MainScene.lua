@@ -33,10 +33,15 @@ function MainScene:setupTestMenu()
     --
     sdkbox.PluginAdColony:init()
     sdkbox.PluginAdColony:setListener(function(args)
+        if args.name == "onAdColonyChange" or args.name == "onAdColonyReward" or args.name == "onAdColonyStarted" or args.name == "onAdColonyFinished" then
+            print("those four event is deprecated")
+            return
+        end
+
         dump(args)
         eventLabel:setString(args.name)
 
-        if args.name == "onAdColonyReward" then
+        if args.name == "adColonyReward" then
             rewardAmount = rewardAmount + args.amount
             rewardLabel:setString(tostring(rewardAmount))
         end
